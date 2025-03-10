@@ -74,6 +74,7 @@ export default [
       "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
     },
   },
+  { extends: ["plugin:react/recommended"] },
   // Add TypeScript specific config if using TypeScript
   // ...typescriptEslint.configs.recommended
 ];
