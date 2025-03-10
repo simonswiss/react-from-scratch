@@ -1,15 +1,14 @@
-import { Dispatch, SetStateAction } from "react";
+import { usePuppies } from "../context/puppy-context";
 import { type Puppy } from "../types";
 import { toggleFromArray } from "../utils/array-helpers";
 
 type Props = {
   puppy: Puppy;
   as?: "div" | "li";
-  liked: Puppy["id"][];
-  setLiked: Dispatch<SetStateAction<Puppy["id"][]>>;
 };
 
-export function PuppyCard({ puppy, as = "div", liked, setLiked }: Props) {
+export function PuppyCard({ puppy, as = "div" }: Props) {
+  const { liked, setLiked } = usePuppies();
   const isLiked = liked.includes(puppy.id);
 
   function toggleLiked() {

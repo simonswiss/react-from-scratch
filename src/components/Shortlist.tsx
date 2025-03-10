@@ -1,16 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
 import { Puppy } from "../types";
 import { removeFromArray } from "../utils/array-helpers";
+import { usePuppies } from "../context/puppy-context";
 
-export function Shortlist({
-  puppies,
-  liked,
-  setLiked,
-}: {
-  puppies: Puppy[];
-  liked: Puppy["id"][];
-  setLiked: Dispatch<SetStateAction<Puppy["id"][]>>;
-}) {
+export function Shortlist() {
+  const { puppies, liked, setLiked } = usePuppies();
   return (
     <div>
       <h2 className="flex items-center gap-2 font-medium">
