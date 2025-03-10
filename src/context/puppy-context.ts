@@ -1,12 +1,13 @@
-import { createContext, use } from "react";
+import { createContext, Dispatch, SetStateAction, use } from "react";
 import { Puppy } from "../types";
 
 export const PuppyContext = createContext<{
   puppies: Puppy[];
+  setPuppies: Dispatch<SetStateAction<Puppy[]>>;
   liked: Puppy["id"][];
-  setLiked: React.Dispatch<React.SetStateAction<Puppy["id"][]>>;
+  setLiked: Dispatch<SetStateAction<Puppy["id"][]>>;
   searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  setSearchQuery: Dispatch<SetStateAction<string>>;
 }>(null);
 
 export function usePuppies() {

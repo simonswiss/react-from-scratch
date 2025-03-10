@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Puppy } from "./types";
-import { puppies } from "./data";
+import { puppies as puppyData } from "./data";
 
 import { PageWrapper } from "./components/PageWrapper";
 import { Container } from "./components/Container";
@@ -24,10 +24,18 @@ export function App() {
 
 function Main() {
   const [liked, setLiked] = useState<Puppy["id"][]>([0, 2]);
+  const [puppies, setPuppies] = useState<Puppy[]>(puppyData);
   const [searchQuery, setSearchQuery] = useState("");
   return (
     <PuppyContext
-      value={{ puppies, liked, setLiked, searchQuery, setSearchQuery }}
+      value={{
+        puppies,
+        setPuppies,
+        liked,
+        setLiked,
+        searchQuery,
+        setSearchQuery,
+      }}
     >
       <main>
         <div className="mt-24 grid gap-8 sm:grid-cols-2">
