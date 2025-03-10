@@ -1,13 +1,9 @@
-import { Dispatch, SetStateAction, useRef } from "react";
+import { useRef } from "react";
+import { usePuppies } from "../context/puppy-context";
 
-export function Search({
-  searchQuery,
-  setSearchQuery,
-}: {
-  searchQuery: string;
-  setSearchQuery: Dispatch<SetStateAction<string>>;
-}) {
+export function Search() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const { searchQuery, setSearchQuery } = usePuppies();
   return (
     <div>
       <label htmlFor="search" className="font-medium">

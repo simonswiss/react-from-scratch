@@ -5,6 +5,8 @@ export const PuppyContext = createContext<{
   puppies: Puppy[];
   liked: Puppy["id"][];
   setLiked: React.Dispatch<React.SetStateAction<Puppy["id"][]>>;
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 }>(null);
 
 export function usePuppies() {
