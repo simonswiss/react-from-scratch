@@ -5,7 +5,6 @@ import { Search } from "./components/Search";
 import { Shortlist } from "./components/Shortlist";
 import { PuppiesList } from "./components/PuppiesList";
 import { NewPuppyForm } from "./components/NewPuppyForm";
-import { PuppyCard } from "./components/PuppyCard";
 
 export function App() {
   return (
