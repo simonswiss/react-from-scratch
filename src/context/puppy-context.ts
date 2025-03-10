@@ -4,8 +4,6 @@ import { Puppy } from "../types";
 export const PuppyContext = createContext<{
   puppies: Puppy[];
   setPuppies: Dispatch<SetStateAction<Puppy[]>>;
-  liked: Puppy["id"][];
-  setLiked: Dispatch<SetStateAction<Puppy["id"][]>>;
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
 }>(null);

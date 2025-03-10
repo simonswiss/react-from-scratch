@@ -1,11 +1,13 @@
-import { Puppy } from "../types";
-import { removeFromArray } from "../utils/array-helpers";
+import { useState } from "react";
 import { usePuppies } from "../context/puppy-context";
+import { toggleLiked } from "../queries/toggle-liked";
+import { Puppy } from "../types";
+import { LoaderCircle } from "lucide-react";
 
 export function Shortlist() {
-  const { puppies, liked, setLiked } = usePuppies();
+  const { puppies, setPuppies } = usePuppies();
   const shortListedPuppies = puppies.filter((puppy) =>
-    liked.includes(puppy.id),
+    puppy.likedBy.includes(1),
   );
   if (!shortListedPuppies.length) return null;
   return (
@@ -41,29 +43,47 @@ export function Shortlist() {
               src={puppy.imageUrl}
             />
             <p className="px-3 text-sm text-slate-800">{puppy.name}</p>
-            <button
-              onClick={() => setLiked(removeFromArray(liked, puppy.id))}
-              className="group h-full border-l border-slate-100 px-2 hover:bg-slate-100"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-x size-4 stroke-slate-400 group-hover:stroke-red-400"
-              >
-                <path d="M18 6 6 18" />
-                <path d="m6 6 12 12" />
-              </svg>
-            </button>
+            <RemoveButton id={puppy.id} />
           </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+function RemoveButton({ id }: { id: Puppy["id"] }) {
+  const { setPuppies } = usePuppies();
+  const [isPending, setIsPending] = useState(false);
+  async function removePuppy(id: Puppy["id"]) {
+    setIsPending(true);
+    const updatedPuppies = await toggleLiked(id);
+    setPuppies(updatedPuppies);
+    setIsPending(false);
+  }
+  return (
+    <button
+      onClick={() => removePuppy(id)}
+      className="group h-full border-l border-slate-100 px-2 hover:bg-slate-100"
+    >
+      {isPending ? (
+        <LoaderCircle className="size-4 animate-spin" />
+      ) : (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={24}
+          height={24}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="lucide lucide-x size-4 stroke-slate-400 group-hover:stroke-red-400"
+        >
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      )}
+    </button>
   );
 }

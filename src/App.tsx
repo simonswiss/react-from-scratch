@@ -1,6 +1,13 @@
-import { useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  Suspense,
+  use,
+  useEffect,
+  useState,
+} from "react";
 import { Puppy } from "./types";
-// import { puppies as puppyData } from "./data";
+import { fetchPuppies } from "./queries/fetch-puppies";
 
 import { PageWrapper } from "./components/PageWrapper";
 import { Container } from "./components/Container";
@@ -17,75 +24,49 @@ export function App() {
     <PageWrapper>
       <Container>
         <Header />
-        <Main />
+        <Suspense
+          fallback={
+            <div className="grid h-96 place-items-center">
+              <LoaderCircle className="animate-spin" />
+            </div>
+          }
+        >
+          <PuppiesFetcher />
+        </Suspense>
       </Container>
     </PageWrapper>
   );
 }
 
-function Main() {
-  const [liked, setLiked] = useState<Puppy["id"][]>([0, 2]);
-  const [puppies, setPuppies] = useState<Puppy[]>([]);
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "error" | "success"
-  >("idle");
-  useEffect(() => {
-    async function fetchData() {
-      setStatus("loading");
-      try {
-        const response = await fetch("http://react-backend.test/api/puppies", {
-          headers: {
-            Accept: "application/json",
-          },
-        });
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message);
-        }
-        console.log({ data });
-        setPuppies(data.data);
-        setStatus("success");
-      } catch (error) {
-        console.error({ error });
-        setStatus("error");
-      }
-    }
-    fetchData();
-  }, []);
+function Main({ pups }: { pups: Puppy[] }) {
+  const [puppies, setPuppies] = useState<Puppy[]>(pups);
   const [searchQuery, setSearchQuery] = useState("");
+
   return (
     <PuppyContext
       value={{
         puppies,
         setPuppies,
-        liked,
-        setLiked,
         searchQuery,
         setSearchQuery,
       }}
     >
       <main>
-        {status === "loading" && (
-          <div className="grid h-96 place-items-center">
-            <LoaderCircle className="animate-spin" />
-          </div>
-        )}
-        {status === "error" && (
-          <div className="grid h-96 place-items-center">
-            <p>Something went wrong</p>
-          </div>
-        )}
-        {status === "success" && (
-          <>
-            <div className="mt-24 grid gap-8 sm:grid-cols-2">
-              <Search />
-              <Shortlist />
-            </div>
-            <PuppiesList />
-            <NewPuppyForm />
-          </>
-        )}
+        <div className="mt-24 grid gap-8 sm:grid-cols-2">
+          <Search />
+          <Shortlist />
+        </div>
+        <PuppiesList />
+        <NewPuppyForm />
       </main>
     </PuppyContext>
   );
+}
+
+const puppyPromise = fetchPuppies();
+
+function PuppiesFetcher() {
+  const pups = use(puppyPromise);
+
+  return <Main pups={pups.data} />;
 }
