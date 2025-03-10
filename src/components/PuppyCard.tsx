@@ -1,4 +1,13 @@
-export function PuppyCard({ puppy, as: Tag = "div" }) {
+import { type Puppy } from "../types";
+import { ElementType } from "react";
+
+type Props = {
+  puppy: Puppy;
+  as?: "div" | "li";
+};
+
+export function PuppyCard({ puppy, as = "div" }: Props) {
+  const Tag = as;
   return (
     <Tag className="overflow-clip rounded-lg bg-white shadow-md ring ring-black/5 hover:-translate-y-0.5">
       <img
@@ -10,7 +19,7 @@ export function PuppyCard({ puppy, as: Tag = "div" }) {
         <div className="flex items-center gap-2">
           <p className="font-semibold">{puppy.name}</p>
           <span className="text-slate-300">·</span>
-          <p className="text-slate-500">{puppy.trait}</p>
+          <p className="text-slate-500">{puppy.vibe}</p>
         </div>
         <button>
           <svg

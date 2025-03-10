@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check": "tsc"
   },
   "type": "module",
   "keywords": [],
@@ -26,6 +27,7 @@
     "globals": "^16.0.0",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "typescript": "^5.8.2",
     "vite": "^6.2.0"
   },
   "dependencies": {
