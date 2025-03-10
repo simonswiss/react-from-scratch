@@ -1,5 +1,6 @@
 import { useFormStatus } from "react-dom";
 import { usePuppies } from "../context/puppy-context";
+import { Puppy } from "../types";
 
 export function NewPuppyForm() {
   const { setPuppies } = usePuppies();
@@ -11,6 +12,7 @@ export function NewPuppyForm() {
       typeof newPuppy.name !== "string" ||
       typeof newPuppy.vibe !== "string"
     ) {
+      console.error("Invalid puppy data");
       return;
     }
     setPuppies((prev) => {
@@ -18,10 +20,9 @@ export function NewPuppyForm() {
         ...prev,
         {
           id: prev.length + 1,
-          name: newPuppy.name as string,
-          vibe: newPuppy.vibe as string,
+          ...newPuppy,
           imagePath: `/images/${prev.length + 1}.jpg`,
-        },
+        } as Puppy,
       ];
       console.log({ newData });
       return newData;
