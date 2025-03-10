@@ -21,7 +21,7 @@ export function NewPuppyForm() {
         {
           id: prev.length + 1,
           ...newPuppy,
-          imagePath: `/images/${prev.length + 1}.jpg`,
+          imageUrl: `/images/${prev.length + 1}.jpg`,
         } as Puppy,
       ];
       console.log({ newData });
