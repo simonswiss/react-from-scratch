@@ -3,6 +3,8 @@ import globals from "globals";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import importPlugin from "eslint-plugin-import";
+import * as tseslint from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
 
 export default [
   { ignores: ["dist", "build", "node_modules", ".git", "*.min.js"] },
@@ -10,6 +12,7 @@ export default [
   {
     files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
     languageOptions: {
+      parser: tsParser,
       ecmaVersion: 2025,
       sourceType: "module",
       globals: {
@@ -21,12 +24,14 @@ export default [
         ecmaFeatures: {
           jsx: true,
         },
+        project: "./tsconfig.json",
       },
     },
     plugins: {
       react,
       "react-hooks": reactHooks,
       import: importPlugin,
+      "@typescript-eslint": tseslint,
     },
     settings: {
       react: {
@@ -71,9 +76,22 @@ export default [
       "prefer-const": "error",
       eqeqeq: ["error", "always", { null: "ignore" }],
       "no-var": "error",
-      "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
+      "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_" }],
+
+      // TypeScript specific rules
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          varsIgnorePattern: "^[A-Z_]",
+          argsIgnorePattern: "^_",
+        },
+      ],
+
+      // Disable original eslint rule in favor of TypeScript version
+      // "no-unused-vars": "off",
     },
   },
-  // Add TypeScript specific config if using TypeScript
-  // ...typescriptEslint.configs.recommended
 ];
