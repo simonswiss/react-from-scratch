@@ -23,14 +23,20 @@ export function App() {
 
 function Main() {
   const [liked, setLiked] = useState<Puppy["id"][]>([1, 3]);
+  const [searchQuery, setSearchQuery] = useState<string>("hello");
 
   return (
     <main>
       <div className="mt-24 grid gap-8 sm:grid-cols-2">
-        <Search />
+        <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <Shortlist liked={liked} setLiked={setLiked} puppies={puppies} />
       </div>
-      <PuppiesList puppies={puppies} liked={liked} setLiked={setLiked} />
+      <PuppiesList
+        searchQuery={searchQuery}
+        puppies={puppies}
+        liked={liked}
+        setLiked={setLiked}
+      />
       <NewPuppyForm />
     </main>
   );
