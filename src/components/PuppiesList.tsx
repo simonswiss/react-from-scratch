@@ -5,27 +5,20 @@ import { LikeToggle } from "./LikeToggle";
 export function PuppiesList({
   searchQuery,
   puppies,
-  liked,
-  setLiked,
+  setPuppies,
 }: {
   searchQuery: string;
   puppies: Puppy[];
-  liked: Puppy["id"][];
-  setLiked: Dispatch<SetStateAction<Puppy["id"][]>>;
+  setPuppies: Dispatch<SetStateAction<Puppy[]>>;
 }) {
   return (
     <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {puppies
         .filter((pup) =>
-          pup.vibe.toLowerCase().includes(searchQuery.toLowerCase()),
+          pup.trait.toLowerCase().includes(searchQuery.toLowerCase()),
         )
         .map((puppy) => (
-          <PuppyCard
-            key={puppy.id}
-            puppy={puppy}
-            liked={liked}
-            setLiked={setLiked}
-          />
+          <PuppyCard key={puppy.id} puppy={puppy} setPuppies={setPuppies} />
         ))}
     </ul>
   );
@@ -33,11 +26,10 @@ export function PuppiesList({
 
 type PuppyCardProps = {
   puppy: Puppy;
-  liked: Puppy["id"][];
-  setLiked: Dispatch<SetStateAction<Puppy["id"][]>>;
+  setPuppies: Dispatch<SetStateAction<Puppy[]>>;
 };
 
-function PuppyCard({ puppy, liked, setLiked }: PuppyCardProps) {
+function PuppyCard({ puppy, setPuppies }: PuppyCardProps) {
   return (
     <li
       key={puppy.id}
@@ -46,15 +38,15 @@ function PuppyCard({ puppy, liked, setLiked }: PuppyCardProps) {
       <img
         className="aspect-square object-cover"
         alt={puppy.name}
-        src={puppy.imagePath}
+        src={puppy.imageUrl}
       />
       <div className="gap flex items-center justify-between p-4 text-sm">
         <div className="flex items-center gap-2">
           <p className="font-semibold">{puppy.name}</p>
           <span className="text-slate-300">·</span>
-          <p className="text-slate-500">{puppy.vibe}</p>
+          <p className="text-slate-500">{puppy.trait}</p>
         </div>
-        <LikeToggle id={puppy.id} liked={liked} setLiked={setLiked} />
+        <LikeToggle puppy={puppy} setPuppies={setPuppies} />
       </div>
     </li>
   );
